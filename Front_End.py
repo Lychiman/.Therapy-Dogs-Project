@@ -357,7 +357,7 @@ def Therapy_Dog_Database():
     startLabel.pack(pady = standardYPadding)
 
     #Creates a button
-    AACMemberOptionsButton = ctk.CTkButton(
+    Dog_Handler_Button = ctk.CTkButton(
         leftTopFrame,
         text= "Dogs & Handlers",
         font= standardFont,
@@ -365,7 +365,7 @@ def Therapy_Dog_Database():
         height= standardHeight,
         command=dog_handlers,
         )
-    AACMemberOptionsButton.pack(pady = standardYPadding)
+    Dog_Handler_Button.pack(pady = standardYPadding)
 
     #Creates a button
     listOfStoresButton = ctk.CTkButton(
