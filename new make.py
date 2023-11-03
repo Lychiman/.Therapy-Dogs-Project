@@ -60,7 +60,8 @@ def Therapy_Dog_Database():
             #Defines function that runs when user sucessfully logs in
             def succesfulLogIn():
 
-                    def dog_handlers():
+                    def dogs():
+
                         #Clears widgits in left bottom frame, middle frame and right frame
                         for widgets in leftBottomFrame.winfo_children():
                             widgets.destroy()
@@ -77,13 +78,84 @@ def Therapy_Dog_Database():
                             rowSelection = namesListListbox.curselection()
 
                             if rowSelection:
-                                rowIndexRank = rowSelection[0]
-                                rowRank = formatted_data[rowIndexRank]
-                                rowRankString= str(rowRank)
-                                DogID = rowRankString.split()[0]
-                            
+                                rowIndex = rowSelection[0]
+                                row = formatted_data[rowIndex]
+                                rowString= str(row)
+                                DogID = rowString.split()[0]
+
+                                def Schedule():
+
+                                    #Creates listbox frame
+                                    listboxFrame= ctk.CTkFrame(rightFrame, fg_color= "#292929")
+                                    listboxFrame.pack(pady = 50)
+
+                                    cursor = connection.cursor()
+                                    cursor.execute("SELECT Name FROM TblDogs WHERE DogID = ?", (DogID,))
+                                    data = cursor.fetchall()
+
+                                    dog_Label= ctk.CTkLabel(
+                                        listboxFrame,
+                                        text = f"{data}'s Schedule",
+                                        font= standardFont
+                                        )
+                                    dog_Label.pack(pady= standardYPadding)
+
+
+                                    cursor = connection.cursor()
+                                    cursor.execute("SELECT Monday FROM TblSchedule WHERE DogID = ?", (DogID,))
+                                    data = cursor.fetchall()
+
+
+                                    monday_Label= ctk.CTkLabel(
+                                        listboxFrame,
+                                        text= f"Monday - {data}",
+                                        font= standardFont
+                                    )
+                                    monday_Label.pack(pady= standardYPadding)
+
+                                    cursor = connection.cursor()
+                                    data = cursor.execute(f"SELECT Tuesday FROM TblSchedule WHERE DogID = {DogID}").fetchall()
+
+                                    tuesday_Label= ctk.CTkLabel(
+                                        listboxFrame,
+                                        text= f"Tuesday - {data}",
+                                        font= standardFont
+                                        )
+                                    tuesday_Label.pack(pady= standardYPadding)
+
+                                    cursor = connection.cursor()
+                                    data = cursor.execute(f"SELECT Wednesday FROM TblSchedule WHERE DogID = {DogID}").fetchall()
+
+                                    Wednesday_Label= ctk.CTkLabel(
+                                        listboxFrame,
+                                        text= f"Wednesday - {data}",
+                                        font= standardFont
+                                        )
+                                    Wednesday_Label.pack(pady= standardYPadding)
+
+                                    cursor = connection.cursor()
+                                    data = cursor.execute(f"SELECT Thursday FROM TblSchedule WHERE DogID = {DogID}").fetchall()
+
+                                    thursday_Label= ctk.CTkLabel(
+                                        listboxFrame,
+                                        text= f"Thursday - {data}",
+                                        font= standardFont
+                                        )
+                                    thursday_Label.pack(pady= standardYPadding)
+
+                                    cursor = connection.cursor()
+                                    data = cursor.execute(f"SELECT Friday FROM TblSchedule WHERE DogID = {DogID}").fetchall()
+
+                                    friday_Label= ctk.CTkLabel(
+                                        listboxFrame,
+                                        text= f"Friday - {data}",
+                                        font= standardFont
+                                        )
+                                    friday_Label.pack(pady= standardYPadding)
+
+
                                 #Creates listbox frame
-                                listboxFrame= ctk.CTkFrame(rightFrame, fg_color= "#292929")
+                                listboxFrame= ctk.CTkFrame(middleFrame, fg_color= "#292929")
                                 listboxFrame.pack(pady = 50)
 
                                 Dogname_Label= ctk.CTkLabel(
@@ -113,7 +185,7 @@ def Therapy_Dog_Database():
                                     font= standardFont
                                     )
                                 breed_of_dog_Label.pack(pady= standardYPadding)
-                                
+                                   
                                 number_of_incidents_Label= ctk.CTkLabel(
                                     listboxFrame,
                                     text= "number of incidents",
@@ -122,14 +194,14 @@ def Therapy_Dog_Database():
                                 number_of_incidents_Label.pack(pady= standardYPadding)
 
                                 #Creates a button
-                                
+                                    
                                 schedule_InformationButton = ctk.CTkButton(
                                     listboxFrame,
                                     text= "View Schedule",
                                     font= (standardFont),
                                     width= standardWidth,
                                     height= standardHeight,
-                                    command= details,
+                                    command= Schedule,
                                     )
                                 schedule_InformationButton.pack(pady = standardYPadding)
 
@@ -173,7 +245,6 @@ def Therapy_Dog_Database():
                                     command= details,
                                     )
                                 Assessment_InformationButton.pack(pady = standardYPadding)
-
                             else:
                                 #Creates error window
                                 errorWindow= ctk.CTkToplevel(root)
@@ -201,11 +272,16 @@ def Therapy_Dog_Database():
                                     )
                                 errorButton.pack(pady= standardYPadding)
 
-                        Listbox_Label = ctk.CTkLabel(middleFrame, text="Dog Name, Owner First Name, Owner Last Name", font = standardFont)
+                                                       
+
+                               
+
+
+                        Listbox_Label = ctk.CTkLabel(leftBottomFrame, text="Dog Name, Owner First Name, Owner Last Name", font = standardFont)
                         Listbox_Label.pack(pady = standardYPadding)
 
                         details_button = ctk.CTkButton(
-                        middleFrame,
+                        leftBottomFrame,
                         text= "Select Dog",
                         font= standardFont,
                         width= standardWidth,
@@ -215,7 +291,7 @@ def Therapy_Dog_Database():
                         details_button.pack(pady = standardYPadding)
 
                         #Creates listbox frame
-                        listboxFrame= ctk.CTkFrame(middleFrame, fg_color= "#292929")
+                        listboxFrame= ctk.CTkFrame(leftBottomFrame, fg_color= "#292929")
                         listboxFrame.pack(pady = 50)
 
                         #Creates listbox and inserts contents of database into it
@@ -391,15 +467,15 @@ def Therapy_Dog_Database():
                     startLabel.pack(pady = standardYPadding)
 
                     #Creates a button
-                    Dog_Handler_Button = ctk.CTkButton(
+                    Dog_Button = ctk.CTkButton(
                         leftTopFrame,
                         text= "Dogs",
                         font= standardFont,
                         width= standardWidth,
                         height= standardHeight,
-                        command=dog_handlers,
+                        command=dogs,
                         )
-                    Dog_Handler_Button.pack(pady = standardYPadding)
+                    Dog_Button.pack(pady = standardYPadding)
 
                     #Creates a button
                     Handler_Button = ctk.CTkButton(
